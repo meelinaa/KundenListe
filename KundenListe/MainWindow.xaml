@@ -1,0 +1,144 @@
+﻿<Window x:Class="KundenListe.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KundenListe"
+        mc:Ignorable="d"
+        Title="Kunden Liste" Height="450" Width="800">
+    <Window.Resources>
+
+        <!-- 🎨 1. Farben definieren (SolidColorBrush) -->
+        <SolidColorBrush x:Key="Neutral" Color="#67c3e1"/>
+        <SolidColorBrush x:Key="NeutralHover" Color="#a2a3ef"/>
+        
+        <SolidColorBrush x:Key="Löschen" Color="#f3601b"/>
+        <SolidColorBrush x:Key="LöschenHover" Color="#800000"/>
+        
+        <SolidColorBrush x:Key="Aktualisieren" Color="#8ac78d"/>
+        <SolidColorBrush x:Key="Clear" Color="#113b13"/>
+        <SolidColorBrush x:Key="ClearHover" Color="#233226"/>
+
+        <SolidColorBrush x:Key="TextWeiß" Color="White"/>
+
+        <!-- Button Styles -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource Neutral}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextWeiß}"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource NeutralHover}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="LöschenBtn" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource Löschen}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource LöschenHover}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ClearBtn" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource Clear}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ClearHover}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- TextBlock Style -->
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        
+        <!-- TextBox Style -->
+
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+
+    </Window.Resources>
+
+    <StackPanel Margin="20">
+
+        <StackPanel DockPanel.Dock="Top" Width="300" Margin="0 10 0 10">
+
+            <Border BorderBrush="Black" BorderThickness="1" Padding="5" Margin="0 0 0 10">
+                <!-- Input Kunde -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Width="90">
+                        <TextBlock Text="Name:"/>
+                        <TextBox x:Name="NameTB" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Width="90">
+                        <TextBlock Text="Alter:"/>
+                        <TextBox x:Name="AlterTB" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Width="90">
+                        <TextBlock Text="Stadt:"/>
+                        <TextBox x:Name="StadtTB" />
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+
+            <!-- Buttons zum Erstellen -->
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="NeuBTN" Content="Neu" Click="NeuBTN_Click"/>
+                <Button x:Name="HinzufügenBTN" Content="Hinzufügen" Click="HinzufügenBTN_Click"/>
+                <Button x:Name="AktualisierenBTN" IsEnabled="False" Content="Aktualisieren" Click="AktualisierenBTN_Click" Background="{StaticResource Aktualisieren}"/>
+            </StackPanel>
+
+        </StackPanel>
+
+        <!-- Ausgabe -->
+        <ListBox x:Name="AnzeigeKundenLB" SelectionChanged="AnzeigeKundenLB_SelectionChanged" Padding="10" Background="AliceBlue"  ItemsSource="{Binding KundenListe}" Width="300">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Name: "/>
+                        <TextBlock Text="{Binding Name}"/>
+                        <TextBlock Text=", Alter: " />
+                        <TextBlock Text="{Binding Alter}"/>
+                        <TextBlock Text=", Stadt: " />
+                        <TextBlock Text="{Binding Stadt}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- Buttons zum Löschen -->
+        <StackPanel DockPanel.Dock="Top" Width="300" Margin="0 10 0 10">
+            <Button x:Name="LöschenBTN" Click="LöschenBTN_Click" Content="Löschen" IsEnabled="False" Style="{StaticResource LöschenBtn}"/>
+            <Button x:Name="ClearBTN" Click="ClearBTN_Click" Content="Alles Löschen" IsEnabled="False" Style="{StaticResource ClearBtn}"/>
+        </StackPanel>
+
+    </StackPanel>
+</Window>
